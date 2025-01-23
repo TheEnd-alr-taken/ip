@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Motiva {
@@ -23,11 +24,33 @@ public class Motiva {
             "| |  | | (_) | |_| |\\ V / (_| |\n" +
             "|_|  |_|\\___/ \\__|_| \\_/ \\__,_|\n\n";
 
-        formatReply(logo + " Hello! I'm Motiva.\n What can I do for you?");
+        formatReply(logo + "Hello! I'm Motiva.\nWhat can I do for you?");
     }
 
     private static void sayGoodBye() {
-        formatReply(" Bye. Hope to see you again soon!");
+        formatReply("Bye. Hope to see you again soon!");
+    }
+
+    private static void listTasks(ArrayList<String> taskList) {
+
+        if (taskList.isEmpty()) {
+            System.out.println("No tasks found.");
+        } else {
+            String text = "";
+            int count = 1;
+
+            for (String task : taskList) {
+                text += count + ". " + task + "\n";
+                count++;
+            }
+
+            formatReply(text);
+        }
+    }
+
+    private static void addTask(String userInput, ArrayList<String> taskList) {
+        taskList.add(userInput);
+        formatReply("added: " + userInput);
     }
 
     public static void main(String[] args) {
@@ -35,14 +58,17 @@ public class Motiva {
 
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
+        ArrayList<String> taskList = new ArrayList<>();
 
         while (true) {
             userInput = scanner.nextLine();
             if (userInput.equals("bye")) {
                 sayGoodBye();
                 break;
+            } else if (userInput.equals("list")) {
+                listTasks(taskList);
             } else {
-                formatReply(userInput);
+                addTask(userInput, taskList);
             }
         }
     }
