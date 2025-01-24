@@ -1,0 +1,16 @@
+todo read book
+deadline return book /by June 7th
+event project meeting /from Aug 7th 2pm /to 4pm
+todo
+deadline /by
+event project meeting 2 /from /to 4pm
+list
+mark 1
+mark 2
+list
+unmark
+unmark 2
+unmark 2
+fetch my task
+bye
+
