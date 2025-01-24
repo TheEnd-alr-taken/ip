@@ -34,7 +34,7 @@ public class Motiva {
     private static void listTasks(ArrayList<Task> taskList) {
 
         if (taskList.isEmpty()) {
-            System.out.println("No tasks found.");
+            formatReply("No tasks found.");
         } else {
             String text = "Here are the tasks in your list:\n";
             int count = 1;
@@ -72,9 +72,68 @@ public class Motiva {
     }
 
     private static void addTask(String userInput, ArrayList<Task> taskList) {
-        Task newTask = new Task(userInput);
-        taskList.add(newTask);
-        formatReply("added: " + userInput);
+
+        String[] parts = userInput.split(" ", 2);
+        String taskType = parts[0];
+        String taskDescription = parts.length > 1 ? parts[1] : "";
+
+        switch (taskType) {
+            case "todo":
+                createTodo(taskDescription, taskList);
+                break;
+    
+            case "deadline":
+                createDeadline(taskDescription, taskList);
+                break;
+    
+            case "event":
+                createEvent(taskDescription, taskList);
+                break;
+
+            default:
+                formatReply("Invalid task type: " + taskType + "\nPlease use: todo, deadline or event");
+        }
+    }
+
+    private static void createTodo(String taskDescription, ArrayList<Task> taskList) {
+        if (taskDescription.trim().isEmpty()) {
+            formatReply("Invalid todo format. Please use: todo <task description>");
+            return;
+        }
+        Task task = new Todo(taskDescription.trim());
+        taskList.add(task);
+        formatReply("Got it. I've added this task:\n  " + task 
+                + "\nNow you have " + taskList.size() + " tasks in the list.");
+    }
+
+    private static void createDeadline(String taskDescription, ArrayList<Task> taskList) {
+        String[] parts = taskDescription.split(" /by ", 2);
+
+        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            formatReply("Invalid deadline format. Please use: deadline <task description> /by <due date>");
+            return;
+        }
+
+        Task task = new Deadline(parts[0].trim(), parts[1].trim());
+        taskList.add(task);
+        formatReply("Got it. I've added this task:\n  " + task 
+                + "\nNow you have " + taskList.size() + " tasks in the list.");
+    }
+
+    private static void createEvent(String taskDescription, ArrayList<Task> taskList) {
+        String[] parts = taskDescription.split(" /from | /to ");
+
+        if (parts.length < 3 || parts[0].trim().isEmpty()
+                || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+            formatReply("Invalid event format. "
+                    + "Please use: event <task description> /from <fromDate> /to <toDate>");
+            return;
+        }
+
+        Task task = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
+        taskList.add(task);
+        formatReply("Got it. I've added this task:\n  " + task 
+                + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
     public static void main(String[] args) {
@@ -97,10 +156,18 @@ public class Motiva {
                 break;
             } else if (userInput.equals("list")) {
                 listTasks(taskList);
-            } else if (userInput.startsWith("mark") || userInput.startsWith("unmark")) {
+            } else if (userInput.matches("^(mark|unmark).*")) {
                 toggleTask(userInput, taskList);
-            } else {
+            } else if (userInput.matches("^(todo|deadline|event).*")) {
                 addTask(userInput, taskList);
+            } else {
+                String commands = "\tlist\n"
+                                + "\tmark <index>\n"
+                                + "\tunmark <index>\n"
+                                + "\ttodo <task description>\n"
+                                + "\tdeadline <task description> /by <due date>\n"
+                                + "\tevent <task description> /from <fromDate> /to <toDate>\n";
+                formatReply("Invalid command. Please try one of the following commands:\n" + commands);
             }
         }
     }
