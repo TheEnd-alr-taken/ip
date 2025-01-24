@@ -27,15 +27,18 @@
     ============================================================
 
     ============================================================
-     Invalid todo format. Please use: todo <task description>
+     Invalid todo format. Please use:
+     todo <task description>
     ============================================================
 
     ============================================================
-     Invalid deadline format. Please use: deadline <task description> /by <due date>
+     Invalid deadline format. Please use:
+     deadline <task description> /by <due date>
     ============================================================
 
     ============================================================
-     Invalid event format. Please use: event <task description> /from <fromDate> /to <toDate>
+     Invalid event format. Please use:
+     event <task description> /from <fromDate> /to <toDate>
     ============================================================
 
     ============================================================
@@ -78,6 +81,7 @@
     ============================================================
      Invalid command. Please try one of the following commands:
      	list
+     	bye
      	mark <index>
      	unmark <index>
      	todo <task description>

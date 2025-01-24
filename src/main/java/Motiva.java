@@ -77,28 +77,31 @@ public class Motiva {
         String taskType = parts[0];
         String taskDescription = parts.length > 1 ? parts[1] : "";
 
-        switch (taskType) {
-            case "todo":
-                createTodo(taskDescription, taskList);
-                break;
-    
-            case "deadline":
-                createDeadline(taskDescription, taskList);
-                break;
-    
-            case "event":
-                createEvent(taskDescription, taskList);
-                break;
+        try {
+            switch (taskType) {
+                case "todo":
+                    createTodo(taskDescription, taskList);
+                    break;
+        
+                case "deadline":
+                    createDeadline(taskDescription, taskList);
+                    break;
+        
+                case "event":
+                    createEvent(taskDescription, taskList);
+                    break;
 
-            default:
-                formatReply("Invalid task type: " + taskType + "\nPlease use: todo, deadline or event");
+                default:
+                    throw new MotivaException("Invalid task type: " + taskType + "\nPlease use: todo, deadline or event");
+            }
+        } catch (MotivaException e) {
+            formatReply(e.getMessage());
         }
     }
 
-    private static void createTodo(String taskDescription, ArrayList<Task> taskList) {
+    private static void createTodo(String taskDescription, ArrayList<Task> taskList) throws MotivaException {
         if (taskDescription.trim().isEmpty()) {
-            formatReply("Invalid todo format. Please use: todo <task description>");
-            return;
+            throw new MotivaException("Invalid todo format. Please use:\ntodo <task description>");
         }
         Task task = new Todo(taskDescription.trim());
         taskList.add(task);
@@ -106,12 +109,11 @@ public class Motiva {
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
-    private static void createDeadline(String taskDescription, ArrayList<Task> taskList) {
+    private static void createDeadline(String taskDescription, ArrayList<Task> taskList) throws MotivaException {
         String[] parts = taskDescription.split(" /by ", 2);
 
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            formatReply("Invalid deadline format. Please use: deadline <task description> /by <due date>");
-            return;
+            throw new MotivaException("Invalid deadline format. Please use:\ndeadline <task description> /by <due date>");
         }
 
         Task task = new Deadline(parts[0].trim(), parts[1].trim());
@@ -120,14 +122,13 @@ public class Motiva {
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
-    private static void createEvent(String taskDescription, ArrayList<Task> taskList) {
+    private static void createEvent(String taskDescription, ArrayList<Task> taskList) throws MotivaException{
         String[] parts = taskDescription.split(" /from | /to ");
 
         if (parts.length < 3 || parts[0].trim().isEmpty()
                 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
-            formatReply("Invalid event format. "
-                    + "Please use: event <task description> /from <fromDate> /to <toDate>");
-            return;
+            throw new MotivaException("Invalid event format. "
+                    + "Please use:\nevent <task description> /from <fromDate> /to <toDate>");
         }
 
         Task task = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
@@ -162,6 +163,7 @@ public class Motiva {
                 addTask(userInput, taskList);
             } else {
                 String commands = "\tlist\n"
+                                + "\tbye\n"
                                 + "\tmark <index>\n"
                                 + "\tunmark <index>\n"
                                 + "\ttodo <task description>\n"
