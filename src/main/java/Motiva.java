@@ -51,6 +51,12 @@ public class Motiva {
     private static void toggleTask(String userInput, ArrayList<Task> taskList ) {
         try {
             String[] parts = userInput.split(" ");
+
+            if (parts.length != 2) {
+                throw new MotivaException("Invalid " + parts[0]
+                        + " format. Please use:\n" + parts[0] + " <index>");
+            }
+
             int index = Integer.parseInt(parts[1]) - 1;
             Task task = taskList.get(index);
 
@@ -68,6 +74,29 @@ public class Motiva {
 
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             formatReply("Invalid index: no tasks found with that index");
+        } catch (MotivaException e) {
+            formatReply(e.getMessage());
+        }
+    }
+
+    private static void deleteTask(String userInput, ArrayList<Task> taskList) {
+        try {
+            String[] parts = userInput.split(" ");
+
+            if (parts.length != 2) {
+                throw new MotivaException("Invalid delete format. Please use:\ndelete <index>");
+            }
+
+            int index = Integer.parseInt(parts[1]) - 1;
+            Task task = taskList.get(index);
+            taskList.remove(index);
+            formatReply("Noted. I've removed this task:\n  " + task 
+                    + "\nNow you have " + taskList.size() + " tasks in the list.");
+
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            formatReply("Invalid index: no tasks found with that index");
+        } catch (MotivaException e) {
+            formatReply(e.getMessage());
         }
     }
 
@@ -90,16 +119,14 @@ public class Motiva {
                 case "event":
                     createEvent(taskDescription, taskList);
                     break;
-
-                default:
-                    throw new MotivaException("Invalid task type: " + taskType + "\nPlease use: todo, deadline or event");
             }
         } catch (MotivaException e) {
             formatReply(e.getMessage());
         }
     }
 
-    private static void createTodo(String taskDescription, ArrayList<Task> taskList) throws MotivaException {
+    private static void createTodo(String taskDescription, ArrayList<Task> taskList)
+            throws MotivaException {
         if (taskDescription.trim().isEmpty()) {
             throw new MotivaException("Invalid todo format. Please use:\ntodo <task description>");
         }
@@ -109,11 +136,13 @@ public class Motiva {
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
-    private static void createDeadline(String taskDescription, ArrayList<Task> taskList) throws MotivaException {
+    private static void createDeadline(String taskDescription, ArrayList<Task> taskList)
+            throws MotivaException {
         String[] parts = taskDescription.split(" /by ", 2);
 
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new MotivaException("Invalid deadline format. Please use:\ndeadline <task description> /by <due date>");
+            throw new MotivaException("Invalid deadline format."
+                    + "Please use:\ndeadline <task description> /by <due date>");
         }
 
         Task task = new Deadline(parts[0].trim(), parts[1].trim());
@@ -122,7 +151,8 @@ public class Motiva {
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
-    private static void createEvent(String taskDescription, ArrayList<Task> taskList) throws MotivaException{
+    private static void createEvent(String taskDescription, ArrayList<Task> taskList)
+            throws MotivaException{
         String[] parts = taskDescription.split(" /from | /to ");
 
         if (parts.length < 3 || parts[0].trim().isEmpty()
@@ -161,11 +191,14 @@ public class Motiva {
                 toggleTask(userInput, taskList);
             } else if (userInput.matches("^(todo|deadline|event).*")) {
                 addTask(userInput, taskList);
+            } else if (userInput.matches("^delete.*")) {
+                deleteTask(userInput, taskList);
             } else {
                 String commands = "\tlist\n"
                                 + "\tbye\n"
                                 + "\tmark <index>\n"
                                 + "\tunmark <index>\n"
+                                + "\tdelete <index>\n"
                                 + "\ttodo <task description>\n"
                                 + "\tdeadline <task description> /by <due date>\n"
                                 + "\tevent <task description> /from <fromDate> /to <toDate>\n";

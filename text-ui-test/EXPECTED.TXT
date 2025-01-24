@@ -32,7 +32,7 @@
     ============================================================
 
     ============================================================
-     Invalid deadline format. Please use:
+     Invalid deadline format.Please use:
      deadline <task description> /by <due date>
     ============================================================
 
@@ -59,6 +59,11 @@
     ============================================================
 
     ============================================================
+     Invalid mark format. Please use:
+     mark <index>
+    ============================================================
+
+    ============================================================
      Here are the tasks in your list:
      1.[T][X] read book
      2.[D][X] return book (by: June 7th)
@@ -66,7 +71,8 @@
     ============================================================
 
     ============================================================
-     Invalid index: no tasks found with that index
+     Invalid unmark format. Please use:
+     unmark <index>
     ============================================================
 
     ============================================================
@@ -79,11 +85,45 @@
     ============================================================
 
     ============================================================
+     Invalid unmark format. Please use:
+     unmark <index>
+    ============================================================
+
+    ============================================================
+     Noted. I've removed this task:
+       [D][ ] return book (by: June 7th)
+     Now you have 2 tasks in the list.
+    ============================================================
+
+    ============================================================
+     Invalid delete format. Please use:
+     delete <index>
+    ============================================================
+
+    ============================================================
+     Here are the tasks in your list:
+     1.[T][X] read book
+     2.[E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+    ============================================================
+
+    ============================================================
+     Noted. I've removed this task:
+       [E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+     Now you have 1 tasks in the list.
+    ============================================================
+
+    ============================================================
+     Here are the tasks in your list:
+     1.[T][X] read book
+    ============================================================
+
+    ============================================================
      Invalid command. Please try one of the following commands:
      	list
      	bye
      	mark <index>
      	unmark <index>
+     	delete <index>
      	todo <task description>
      	deadline <task description> /by <due date>
      	event <task description> /from <fromDate> /to <toDate>
