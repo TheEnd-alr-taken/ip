@@ -17,7 +17,27 @@ public class Task {
     }
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone) ? "X" : " ";
+    }
+
+    public String toFileString() {
+        return String.format("%s | %s", 
+                getStatusIcon(),
+                this.description);
+    }
+
+    public static boolean isValidTask(String taskType, String[] parts) {
+        switch (taskType) {
+            case "T":
+                return parts.length == 1 && !parts[0].trim().isEmpty();
+            case "D":
+                return parts.length == 2 && !parts[0].trim().isEmpty() && !parts[1].trim().isEmpty();
+            case "E":
+                return parts.length == 3 && !parts[0].trim().isEmpty()
+                        && !parts[1].trim().isEmpty() && !parts[2].trim().isEmpty();
+            default:
+                return false;
+        }
     }
 
     public String toString() {
