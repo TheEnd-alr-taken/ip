@@ -1,7 +1,9 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Motiva {
+    private static final String DATA_FILE_PATH = "./data/motiva.txt";
 
     private static void formatReply(String text) {
         String indent = " ".repeat(4);
@@ -170,9 +172,19 @@ public class Motiva {
     public static void main(String[] args) {
         sayGreeting();
 
+        Storage storage = new Storage(DATA_FILE_PATH);
         Scanner scanner = new Scanner(System.in);
         String userInput = "";
         ArrayList<Task> taskList = new ArrayList<>();
+
+        try {
+            taskList = storage.loadFromStorage();
+        } catch (IOException e) {
+            formatReply("An I/O error occur while trying to read from " + DATA_FILE_PATH
+                    + " :\n" + e.getMessage());
+        } catch (MotivaException e) {
+            formatReply(e.getMessage());
+        }
 
         while (true) {
             userInput = scanner.nextLine();
@@ -182,27 +194,42 @@ public class Motiva {
                 continue;
             }
 
-            if (userInput.equals("bye")) {
-                sayGoodBye();
-                break;
-            } else if (userInput.equals("list")) {
-                listTasks(taskList);
-            } else if (userInput.matches("^(mark|unmark).*")) {
-                toggleTask(userInput, taskList);
-            } else if (userInput.matches("^(todo|deadline|event).*")) {
-                addTask(userInput, taskList);
-            } else if (userInput.matches("^delete.*")) {
-                deleteTask(userInput, taskList);
-            } else {
-                String commands = "\tlist\n"
-                                + "\tbye\n"
-                                + "\tmark <index>\n"
-                                + "\tunmark <index>\n"
-                                + "\tdelete <index>\n"
-                                + "\ttodo <task description>\n"
-                                + "\tdeadline <task description> /by <due date>\n"
-                                + "\tevent <task description> /from <fromDate> /to <toDate>\n";
-                formatReply("Invalid command. Please try one of the following commands:\n" + commands);
+            try {
+
+                if (userInput.equals("bye")) {
+                    sayGoodBye();
+                    break;
+
+                } else if (userInput.equals("list")) {
+                    listTasks(taskList);
+
+                } else if (userInput.matches("^(mark|unmark).*")) {
+                    toggleTask(userInput, taskList);
+                    storage.writeToStorage(taskList);
+
+                } else if (userInput.matches("^(todo|deadline|event).*")) {
+                    addTask(userInput, taskList);
+                    storage.writeToStorage(taskList);
+
+                } else if (userInput.matches("^delete.*")) {
+                    deleteTask(userInput, taskList);
+                    storage.writeToStorage(taskList);
+
+                } else {
+                    String commands = "\tlist\n"
+                                    + "\tbye\n"
+                                    + "\tmark <index>\n"
+                                    + "\tunmark <index>\n"
+                                    + "\tdelete <index>\n"
+                                    + "\ttodo <task description>\n"
+                                    + "\tdeadline <task description> /by <due date>\n"
+                                    + "\tevent <task description> /from <fromDate> /to <toDate>\n";
+                    formatReply("Invalid command. Please try one of the following commands:\n" + commands);
+                }
+
+            } catch (IOException e) {
+                formatReply("An I/O error occur while trying to write to " + DATA_FILE_PATH
+                        + ":\n" + e.getMessage());
             }
         }
     }
