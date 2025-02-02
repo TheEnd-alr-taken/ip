@@ -130,7 +130,9 @@ public class Motiva {
     private static void createTodo(String taskDescription, ArrayList<Task> taskList)
             throws MotivaException {
         if (taskDescription.trim().isEmpty()) {
-            throw new MotivaException("Invalid todo format. Please use:\ntodo <task description>");
+            throw new MotivaException("Invalid todo format. Please use:\ntodo <task description>\n"
+                    + "Where:\n"
+                    + "  - <task description> is a description of the task (cannot be empty).\n");
         }
         Task task = new Todo(taskDescription.trim());
         taskList.add(task);
@@ -142,9 +144,15 @@ public class Motiva {
             throws MotivaException {
         String[] parts = taskDescription.split(" /by ", 2);
 
-        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new MotivaException("Invalid deadline format."
-                    + "Please use:\ndeadline <task description> /by <due date>");
+        //if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+        if (!Task.isValidTask("D", parts)) {
+            throw new MotivaException("Invalid deadline format. "
+                    + "Please use:\ndeadline <task description> /by <due date>\n"
+                    + "Where:\n"
+                    + "  - <task description> is a description of the task (cannot be empty).\n"
+                    + "  - <due date> must be in one of the following formats:\n"
+                    + "    - yyyy-MM-dd (e.g., 2025-12-31)\n"
+                    + "    - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)\n");
         }
 
         Task task = new Deadline(parts[0].trim(), parts[1].trim());
@@ -157,10 +165,16 @@ public class Motiva {
             throws MotivaException{
         String[] parts = taskDescription.split(" /from | /to ");
 
-        if (parts.length < 3 || parts[0].trim().isEmpty()
-                || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+        //if (parts.length < 3 || parts[0].trim().isEmpty()
+        //        || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+        if (!Task.isValidTask("E", parts)) {
             throw new MotivaException("Invalid event format. "
-                    + "Please use:\nevent <task description> /from <fromDate> /to <toDate>");
+                    + "Please use:\nevent <task description> /from <fromDate> /to <toDate>\n"
+                    + "Where:\n"
+                    + "  - <task description> is a description of the task (cannot be empty).\n"
+                    + "  - <fromDate> & <toDate> must be in one of the following formats:\n"
+                    + "    - yyyy-MM-dd (e.g., 2025-12-31)\n"
+                    + "    - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)\n");
         }
 
         Task task = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
