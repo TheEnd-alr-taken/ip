@@ -1,2 +1,3 @@
-T |   | read book
-D | X | return book | June 7th
+T |   | Read Book
+D |   | Buy Book | 2024-12-31 2359
+E | X | Camping | 2024-12-31 0000 | 2025-01-22 2359

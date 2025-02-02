@@ -28,7 +28,7 @@ public class Storage {
             String[] parts = line.split(" \\| ");
 
             if (parts.length < 3 || !parts[0].matches("^[TDE]$") || !parts[1].matches("^[ X]$")) {
-                throw new MotivaException("Invalid task format in " + this.filePath);
+                throw new MotivaException("Invalid task format in " + this.filePath + " :\n " + line);
             }
 
             String taskType = parts[0];
@@ -36,7 +36,7 @@ public class Storage {
             String[] taskParts = Arrays.copyOfRange(parts, 2, parts.length);
 
             if (!Task.isValidTask(taskType, taskParts)) {
-                throw new MotivaException("Invalid task format in " + this.filePath);
+                throw new MotivaException("Invalid task format in " + this.filePath + " :\n " + line);
             }
 
             Task task = switch (taskType) {
