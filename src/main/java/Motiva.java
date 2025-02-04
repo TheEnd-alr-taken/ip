@@ -1,250 +1,49 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Motiva {
     private static final String DATA_FILE_PATH = "./data/motiva.txt";
+    
+    private final Storage storage;
+    private TaskList taskList;
 
-    private static void formatReply(String text) {
-        String indent = " ".repeat(4);
-        String[] lines = text.split("\n");
-
-        System.out.println(indent + "============================================================");
-
-        for (String line : lines) {
-            System.out.println(" "+ indent + line);
-        }
-
-        System.out.println(indent + "============================================================\n");
-    }
-
-    private static void sayGreeting() {
-        String logo =
-            " __  __       _   _\n" +
-            "|  \\/  | ___ | |_(_)_   ____ _\n" +
-            "| |\\/| |/ _ \\| __| \\ \\ / / _` |\n" +
-            "| |  | | (_) | |_| |\\ V / (_| |\n" +
-            "|_|  |_|\\___/ \\__|_| \\_/ \\__,_|\n";
-
-        formatReply(logo + "Hello! I'm Motiva.\nWhat can I do for you?");
-    }
-
-    private static void sayGoodBye() {
-        formatReply("Bye. Hope to see you again soon!");
-    }
-
-    private static void listTasks(ArrayList<Task> taskList) {
-
-        if (taskList.isEmpty()) {
-            formatReply("No tasks found.");
-        } else {
-            String text = "Here are the tasks in your list:\n";
-            int count = 1;
-
-            for (Task task : taskList) {
-                text += count + "." + task + "\n";
-                count++;
-            }
-
-            formatReply(text);
-        }
-    }
-
-    private static void toggleTask(String userInput, ArrayList<Task> taskList ) {
-        try {
-            String[] parts = userInput.split(" ");
-
-            if (parts.length != 2) {
-                throw new MotivaException("Invalid " + parts[0]
-                        + " format. Please use:\n" + parts[0] + " <index>");
-            }
-
-            int index = Integer.parseInt(parts[1]) - 1;
-            Task task = taskList.get(index);
-
-            if (userInput.startsWith("mark") && !task.isDone()) {
-                task.toggleDone();
-                formatReply("Nice! I've marked this task as done:\n  " + task);
-
-            } else if (userInput.startsWith("unmark") && task.isDone()) {
-                task.toggleDone();
-                formatReply("OK, I've marked this task as not done yet:\n  " + task);
-
-            } else {
-                formatReply("\"" + task + "\" is already " + parts[0] +"ed");
-            }
-
-        } catch (NumberFormatException | IndexOutOfBoundsException e) {
-            formatReply("Invalid index: no tasks found with that index");
-        } catch (MotivaException e) {
-            formatReply(e.getMessage());
-        }
-    }
-
-    private static void deleteTask(String userInput, ArrayList<Task> taskList) {
-        try {
-            String[] parts = userInput.split(" ");
-
-            if (parts.length != 2) {
-                throw new MotivaException("Invalid delete format. Please use:\ndelete <index>");
-            }
-
-            int index = Integer.parseInt(parts[1]) - 1;
-            Task task = taskList.get(index);
-            taskList.remove(index);
-            formatReply("Noted. I've removed this task:\n  " + task 
-                    + "\nNow you have " + taskList.size() + " tasks in the list.");
-
-        } catch (NumberFormatException | IndexOutOfBoundsException e) {
-            formatReply("Invalid index: no tasks found with that index");
-        } catch (MotivaException e) {
-            formatReply(e.getMessage());
-        }
-    }
-
-    private static void addTask(String userInput, ArrayList<Task> taskList) {
-
-        String[] parts = userInput.split(" ", 2);
-        String taskType = parts[0];
-        String taskDescription = parts.length > 1 ? parts[1] : "";
-
-        try {
-            switch (taskType) {
-                case "todo":
-                    createTodo(taskDescription, taskList);
-                    break;
-        
-                case "deadline":
-                    createDeadline(taskDescription, taskList);
-                    break;
-        
-                case "event":
-                    createEvent(taskDescription, taskList);
-                    break;
-            }
-        } catch (MotivaException e) {
-            formatReply(e.getMessage());
-        }
-    }
-
-    private static void createTodo(String taskDescription, ArrayList<Task> taskList)
-            throws MotivaException {
-        if (taskDescription.trim().isEmpty()) {
-            throw new MotivaException("Invalid todo format. Please use:\ntodo <task description>\n"
-                    + "Where:\n"
-                    + "  - <task description> is a description of the task (cannot be empty).\n");
-        }
-        Task task = new Todo(taskDescription.trim());
-        taskList.add(task);
-        formatReply("Got it. I've added this task:\n  " + task 
-                + "\nNow you have " + taskList.size() + " tasks in the list.");
-    }
-
-    private static void createDeadline(String taskDescription, ArrayList<Task> taskList)
-            throws MotivaException {
-        String[] parts = taskDescription.split(" /by ", 2);
-
-        //if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-        if (!Task.isValidTask("D", parts)) {
-            throw new MotivaException("Invalid deadline format. "
-                    + "Please use:\ndeadline <task description> /by <due date>\n"
-                    + "Where:\n"
-                    + "  - <task description> is a description of the task (cannot be empty).\n"
-                    + "  - <due date> must be in one of the following formats:\n"
-                    + "    - yyyy-MM-dd (e.g., 2025-12-31)\n"
-                    + "    - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)\n");
-        }
-
-        Task task = new Deadline(parts[0].trim(), parts[1].trim());
-        taskList.add(task);
-        formatReply("Got it. I've added this task:\n  " + task 
-                + "\nNow you have " + taskList.size() + " tasks in the list.");
-    }
-
-    private static void createEvent(String taskDescription, ArrayList<Task> taskList)
-            throws MotivaException{
-        String[] parts = taskDescription.split(" /from | /to ");
-
-        //if (parts.length < 3 || parts[0].trim().isEmpty()
-        //        || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
-        if (!Task.isValidTask("E", parts)) {
-            throw new MotivaException("Invalid event format. "
-                    + "Please use:\nevent <task description> /from <fromDate> /to <toDate>\n"
-                    + "Where:\n"
-                    + "  - <task description> is a description of the task (cannot be empty).\n"
-                    + "  - <fromDate> & <toDate> must be in one of the following formats:\n"
-                    + "    - yyyy-MM-dd (e.g., 2025-12-31)\n"
-                    + "    - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)\n");
-        }
-
-        Task task = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
-        taskList.add(task);
-        formatReply("Got it. I've added this task:\n  " + task 
-                + "\nNow you have " + taskList.size() + " tasks in the list.");
-    }
-
-    public static void main(String[] args) {
-        sayGreeting();
-
-        Storage storage = new Storage(DATA_FILE_PATH);
-        Scanner scanner = new Scanner(System.in);
-        String userInput = "";
-        ArrayList<Task> taskList = new ArrayList<>();
+    public Motiva(String filePath) {
+        storage = new Storage(filePath);
 
         try {
             taskList = storage.loadFromStorage();
-        } catch (IOException e) {
-            formatReply("An I/O error occur while trying to read from " + DATA_FILE_PATH
+        } catch (IOException | MotivaException e) {
+            Ui.formatReply("An I/O error occur while trying to read from " + DATA_FILE_PATH
                     + " :\n" + e.getMessage());
-        } catch (MotivaException e) {
-            formatReply(e.getMessage());
-        }
+            taskList = new TaskList();
+        } 
+    }
+
+    public void run() {
+        Ui.sayGreeting();
+        Scanner scanner = new Scanner(System.in);
+        String userInput = "";
 
         while (true) {
             userInput = scanner.nextLine();
 
             if (userInput.isEmpty()) {
-                formatReply("No task captured.\nDo key in the task for me to keep track.");
+                Ui.formatReply("No task captured.\nDo key in the task for me to keep track.");
                 continue;
             }
 
-            try {
-
-                if (userInput.equals("bye")) {
-                    sayGoodBye();
-                    break;
-
-                } else if (userInput.equals("list")) {
-                    listTasks(taskList);
-
-                } else if (userInput.matches("^(mark|unmark).*")) {
-                    toggleTask(userInput, taskList);
-                    storage.writeToStorage(taskList);
-
-                } else if (userInput.matches("^(todo|deadline|event).*")) {
-                    addTask(userInput, taskList);
-                    storage.writeToStorage(taskList);
-
-                } else if (userInput.matches("^delete.*")) {
-                    deleteTask(userInput, taskList);
-                    storage.writeToStorage(taskList);
-
-                } else {
-                    String commands = "\tlist\n"
-                                    + "\tbye\n"
-                                    + "\tmark <index>\n"
-                                    + "\tunmark <index>\n"
-                                    + "\tdelete <index>\n"
-                                    + "\ttodo <task description>\n"
-                                    + "\tdeadline <task description> /by <due date>\n"
-                                    + "\tevent <task description> /from <fromDate> /to <toDate>\n";
-                    formatReply("Invalid command. Please try one of the following commands:\n" + commands);
-                }
-
-            } catch (IOException e) {
-                formatReply("An I/O error occur while trying to write to " + DATA_FILE_PATH
-                        + ":\n" + e.getMessage());
+            if (userInput.equals("bye")) {
+                Ui.sayGoodBye();
+                break;
             }
+
+            Parser.parseCommand(userInput, taskList, storage);
+
         }
+        scanner.close();
+    }
+
+    public static void main(String[] args) {
+        new Motiva(DATA_FILE_PATH).run();
     }
 }

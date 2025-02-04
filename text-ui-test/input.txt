@@ -1,6 +1,6 @@
 todo read book
-deadline return book /by June 7th
-event project meeting /from Aug 7th 2pm /to 4pm
+deadline return book /by 2024-12-31
+event project meeting /from 2024-12-31 0000 /to 2025-01-22
 todo
 deadline /by
 event project meeting 2 /from /to 4pm

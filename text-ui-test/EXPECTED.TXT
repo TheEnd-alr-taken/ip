@@ -16,36 +16,48 @@
 
     ============================================================
      Got it. I've added this task:
-       [D][ ] return book (by: June 7th)
+       [D][ ] return book (by: Dec 31 2024, 11:59 pm)
      Now you have 2 tasks in the list.
     ============================================================
 
     ============================================================
      Got it. I've added this task:
-       [E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+       [E][ ] project meeting (from: Dec 31 2024, 12:00 am to: Jan 22 2025, 11:59 pm)
      Now you have 3 tasks in the list.
     ============================================================
 
     ============================================================
      Invalid todo format. Please use:
      todo <task description>
+     Where:
+       - <task description> is a description of the task (cannot be empty).
     ============================================================
 
     ============================================================
-     Invalid deadline format.Please use:
+     Invalid deadline format. Please use:
      deadline <task description> /by <due date>
+     Where:
+       - <task description> is a description of the task (cannot be empty).
+       - <due date> must be in one of the following formats:
+         - yyyy-MM-dd (e.g., 2025-12-31)
+         - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)
     ============================================================
 
     ============================================================
      Invalid event format. Please use:
      event <task description> /from <fromDate> /to <toDate>
+     Where:
+       - <task description> is a description of the task (cannot be empty).
+       - <fromDate> & <toDate> must be in one of the following formats:
+         - yyyy-MM-dd (e.g., 2025-12-31)
+         - yyyy-MM-dd HHmm (e.g., 2025-12-31 2359)
     ============================================================
 
     ============================================================
      Here are the tasks in your list:
      1.[T][ ] read book
-     2.[D][ ] return book (by: June 7th)
-     3.[E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+     2.[D][ ] return book (by: Dec 31 2024, 11:59 pm)
+     3.[E][ ] project meeting (from: Dec 31 2024, 12:00 am to: Jan 22 2025, 11:59 pm)
     ============================================================
 
     ============================================================
@@ -55,7 +67,7 @@
 
     ============================================================
      Nice! I've marked this task as done:
-       [D][X] return book (by: June 7th)
+       [D][X] return book (by: Dec 31 2024, 11:59 pm)
     ============================================================
 
     ============================================================
@@ -66,8 +78,8 @@
     ============================================================
      Here are the tasks in your list:
      1.[T][X] read book
-     2.[D][X] return book (by: June 7th)
-     3.[E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+     2.[D][X] return book (by: Dec 31 2024, 11:59 pm)
+     3.[E][ ] project meeting (from: Dec 31 2024, 12:00 am to: Jan 22 2025, 11:59 pm)
     ============================================================
 
     ============================================================
@@ -77,11 +89,11 @@
 
     ============================================================
      OK, I've marked this task as not done yet:
-       [D][ ] return book (by: June 7th)
+       [D][ ] return book (by: Dec 31 2024, 11:59 pm)
     ============================================================
 
     ============================================================
-     "[D][ ] return book (by: June 7th)" is already unmarked
+     "[D][ ] return book (by: Dec 31 2024, 11:59 pm)" is already unmarked
     ============================================================
 
     ============================================================
@@ -91,7 +103,7 @@
 
     ============================================================
      Noted. I've removed this task:
-       [D][ ] return book (by: June 7th)
+       [D][ ] return book (by: Dec 31 2024, 11:59 pm)
      Now you have 2 tasks in the list.
     ============================================================
 
@@ -103,12 +115,12 @@
     ============================================================
      Here are the tasks in your list:
      1.[T][X] read book
-     2.[E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+     2.[E][ ] project meeting (from: Dec 31 2024, 12:00 am to: Jan 22 2025, 11:59 pm)
     ============================================================
 
     ============================================================
      Noted. I've removed this task:
-       [E][ ] project meeting (from: Aug 7th 2pm to: 4pm)
+       [E][ ] project meeting (from: Dec 31 2024, 12:00 am to: Jan 22 2025, 11:59 pm)
      Now you have 1 tasks in the list.
     ============================================================
 

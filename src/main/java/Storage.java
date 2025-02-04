@@ -3,7 +3,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
@@ -13,8 +12,12 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public ArrayList<Task> loadFromStorage() throws IOException, MotivaException {
-        ArrayList<Task> taskList = new ArrayList<>();
+    public String getFilePath() {
+        return this.filePath;
+    }
+
+    public TaskList loadFromStorage() throws IOException, MotivaException {
+        TaskList taskList = new TaskList();
         File file = new File(filePath);
         
         if (!file.exists()) {
@@ -52,13 +55,14 @@ public class Storage {
 
             taskList.add(task);
         }
+        scanner.close();
 
         return taskList;
     }
 
-    public void writeToStorage(ArrayList<Task> taskList) throws IOException {
+    public void writeToStorage(TaskList taskList) throws IOException {
         FileWriter fw = new FileWriter(this.filePath);
-        for (Task task : taskList) {
+        for (Task task : taskList.getTasks()) {
             fw.write(task.toFileString() + "\n");
         }
         fw.close();
