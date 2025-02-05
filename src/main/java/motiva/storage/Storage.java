@@ -1,9 +1,18 @@
+package motiva.storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.Arrays;
 import java.util.Scanner;
+
+import motiva.MotivaException;
+import motiva.task.Deadline;
+import motiva.task.Event;
+import motiva.task.Task;
+import motiva.task.TaskList;
+import motiva.task.Todo;
 
 public class Storage {
     private final String filePath;
@@ -31,6 +40,7 @@ public class Storage {
             String[] parts = line.split(" \\| ");
 
             if (parts.length < 3 || !parts[0].matches("^[TDE]$") || !parts[1].matches("^[ X]$")) {
+                scanner.close();
                 throw new MotivaException("Invalid task format in " + this.filePath + " :\n " + line);
             }
 
@@ -39,6 +49,7 @@ public class Storage {
             String[] taskParts = Arrays.copyOfRange(parts, 2, parts.length);
 
             if (!Task.isValidTask(taskType, taskParts)) {
+                scanner.close();
                 throw new MotivaException("Invalid task format in " + this.filePath + " :\n " + line);
             }
 

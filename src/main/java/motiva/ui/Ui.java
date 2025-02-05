@@ -1,3 +1,5 @@
+package motiva.ui;
+
 public class Ui {
     
     public static void formatReply(String text) {

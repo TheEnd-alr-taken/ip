@@ -1,5 +1,12 @@
+package motiva;
+
 import java.io.IOException;
 import java.util.Scanner;
+
+import motiva.parser.Parser;
+import motiva.storage.Storage;
+import motiva.task.TaskList;
+import motiva.ui.Ui;
 
 public class Motiva {
     private static final String DATA_FILE_PATH = "./data/motiva.txt";
