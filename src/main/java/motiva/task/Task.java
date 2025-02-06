@@ -32,7 +32,7 @@ public class Task {
     }
 
     public String toFileString() {
-        return String.format("%s | %s", 
+        return String.format("%s | %s",
                 getStatusIcon(),
                 this.description);
     }
@@ -53,25 +53,25 @@ public class Task {
 
     public static boolean isValidTask(String taskType, String[] parts) {
         switch (taskType) {
-            case "T":
-                return parts.length == 1 && !parts[0].trim().isEmpty();
-            case "D":
-                return parts.length == 2 && !parts[0].trim().isEmpty() && isValidDate(parts[1].trim());
-            case "E":
-                return parts.length == 3 && !parts[0].trim().isEmpty()
-                        && isValidDate(parts[1].trim()) && isValidDate(parts[2].trim());
-            default:
-                return false;
+        case "T":
+            return parts.length == 1 && !parts[0].trim().isEmpty();
+        case "D":
+            return parts.length == 2 && !parts[0].trim().isEmpty() && isValidDate(parts[1].trim());
+        case "E":
+            return parts.length == 3 && !parts[0].trim().isEmpty()
+                    && isValidDate(parts[1].trim()) && isValidDate(parts[2].trim());
+        default:
+            return false;
         }
     }
 
     public LocalDateTime parseDateTime(String dateTime) {
-            if (dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
-                return LocalDateTime.parse(dateTime, DATE_TIME_FORMAT);
-            } else {
-                LocalDate date = LocalDate.parse(dateTime, DATE_FORMAT);
-                return date.atTime(23, 59);
-            }  
+        if (dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
+            return LocalDateTime.parse(dateTime, DATE_TIME_FORMAT);
+        } else {
+            LocalDate date = LocalDate.parse(dateTime, DATE_FORMAT);
+            return date.atTime(23, 59);
+        }
     }
 
     public String toString() {

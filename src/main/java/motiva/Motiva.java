@@ -10,7 +10,7 @@ import motiva.ui.Ui;
 
 public class Motiva {
     private static final String DATA_FILE_PATH = "./data/motiva.txt";
-    
+
     private final Storage storage;
     private TaskList taskList;
 
@@ -23,7 +23,7 @@ public class Motiva {
             Ui.formatReply("An I/O error occur while trying to read from " + DATA_FILE_PATH
                     + " :\n" + e.getMessage());
             taskList = new TaskList();
-        } 
+        }
     }
 
     public void run() {

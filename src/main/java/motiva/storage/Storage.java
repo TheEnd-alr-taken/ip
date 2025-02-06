@@ -28,13 +28,13 @@ public class Storage {
     public TaskList loadFromStorage() throws IOException, MotivaException {
         TaskList taskList = new TaskList();
         File file = new File(filePath);
-        
+
         if (!file.exists()) {
             file.getParentFile().mkdirs();
             return taskList;
         }
 
-        Scanner scanner = new Scanner(file); 
+        Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(" \\| ");
