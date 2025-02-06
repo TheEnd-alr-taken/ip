@@ -12,41 +12,41 @@ import motiva.task.Todo;
 import motiva.ui.Ui;
 
 public class Parser {
-    
+
     public static void parseCommand(String userInput, TaskList taskList, Storage storage) {
         try {
             if (userInput.equals("list")) {
                 listTasks(taskList);
 
-            } else if (userInput.matches("^(mark|unmark).*")) {
+            } else if (userInput.matches("^(mark|unmark) .*")) {
                 toggleTask(userInput, taskList);
                 storage.writeToStorage(taskList);
 
-            } else if (userInput.matches("^(todo|deadline|event).*")) {
+            } else if (userInput.matches("^(todo|deadline|event) .*")) {
                 addTask(userInput, taskList);
                 storage.writeToStorage(taskList);
 
-            } else if (userInput.matches("^delete.*")) {
+            } else if (userInput.matches("^delete .*")) {
                 deleteTask(userInput, taskList);
                 storage.writeToStorage(taskList);
 
             } else {
                 String commands = "\tlist\n"
-                                + "\tbye\n"
-                                + "\tmark <index>\n"
-                                + "\tunmark <index>\n"
-                                + "\tdelete <index>\n"
-                                + "\ttodo <task description>\n"
-                                + "\tdeadline <task description> /by <due date>\n"
-                                + "\tevent <task description> /from <fromDate> /to <toDate>\n";
+                        + "\tbye\n"
+                        + "\tmark <index>\n"
+                        + "\tunmark <index>\n"
+                        + "\tdelete <index>\n"
+                        + "\ttodo <task description>\n"
+                        + "\tdeadline <task description> /by <due date>\n"
+                        + "\tevent <task description> /from <fromDate> /to <toDate>\n";
                 Ui.formatReply("Invalid command. Please try one of the following commands:\n" + commands);
             }
 
         } catch (IOException e) {
             Ui.formatReply("An I/O error occur while trying to write to " + storage.getFilePath()
-                        + ":\n" + e.getMessage());
+                    + ":\n" + e.getMessage());
         }
-        
+
     }
 
     private static void listTasks(TaskList taskList) {
@@ -66,7 +66,7 @@ public class Parser {
         }
     }
 
-    private static void toggleTask(String userInput, TaskList taskList ) {
+    private static void toggleTask(String userInput, TaskList taskList) {
         try {
             String[] parts = userInput.split(" ");
 
@@ -87,7 +87,7 @@ public class Parser {
                 Ui.formatReply("OK, I've marked this task as not done yet:\n  " + task);
 
             } else {
-                Ui.formatReply("\"" + task + "\" is already " + parts[0] +"ed");
+                Ui.formatReply("\"" + task + "\" is already " + parts[0] + "ed");
             }
 
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -108,7 +108,7 @@ public class Parser {
             int index = Integer.parseInt(parts[1]) - 1;
             Task task = taskList.get(index);
             taskList.remove(index);
-            Ui.formatReply("Noted. I've removed this task:\n  " + task 
+            Ui.formatReply("Noted. I've removed this task:\n  " + task
                     + "\nNow you have " + taskList.size() + " tasks in the list.");
 
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -126,17 +126,17 @@ public class Parser {
 
         try {
             switch (taskType) {
-                case "todo":
-                    createTodo(taskDescription, taskList);
-                    break;
-        
-                case "deadline":
-                    createDeadline(taskDescription, taskList);
-                    break;
-        
-                case "event":
-                    createEvent(taskDescription, taskList);
-                    break;
+            case "todo":
+                createTodo(taskDescription, taskList);
+                break;
+
+            case "deadline":
+                createDeadline(taskDescription, taskList);
+                break;
+
+            case "event":
+                createEvent(taskDescription, taskList);
+                break;
             }
         } catch (MotivaException e) {
             Ui.formatReply(e.getMessage());
@@ -152,7 +152,7 @@ public class Parser {
         }
         Task task = new Todo(taskDescription.trim());
         taskList.add(task);
-        Ui.formatReply("Got it. I've added this task:\n  " + task 
+        Ui.formatReply("Got it. I've added this task:\n  " + task
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
@@ -172,12 +172,12 @@ public class Parser {
 
         Task task = new Deadline(parts[0].trim(), parts[1].trim());
         taskList.add(task);
-        Ui.formatReply("Got it. I've added this task:\n  " + task 
+        Ui.formatReply("Got it. I've added this task:\n  " + task
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 
     private static void createEvent(String taskDescription, TaskList taskList)
-            throws MotivaException{
+            throws MotivaException {
         String[] parts = taskDescription.split(" /from | /to ");
 
         if (!Task.isValidTask("E", parts)) {
@@ -192,7 +192,7 @@ public class Parser {
 
         Task task = new Event(parts[0].trim(), parts[1].trim(), parts[2].trim());
         taskList.add(task);
-        Ui.formatReply("Got it. I've added this task:\n  " + task 
+        Ui.formatReply("Got it. I've added this task:\n  " + task
                 + "\nNow you have " + taskList.size() + " tasks in the list.");
     }
 

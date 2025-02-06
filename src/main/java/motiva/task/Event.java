@@ -3,7 +3,7 @@ package motiva.task;
 import java.time.LocalDateTime;
 
 public class Event extends Task {
-    
+
     protected LocalDateTime from;
     protected LocalDateTime to;
 
@@ -14,8 +14,8 @@ public class Event extends Task {
     }
 
     public String toFileString() {
-        return String.format("E | %s | %s | %s", 
-                super.toFileString(), 
+        return String.format("E | %s | %s | %s",
+                super.toFileString(),
                 this.from.format(Task.DATE_TIME_FORMAT),
                 this.to.format(Task.DATE_TIME_FORMAT));
     }

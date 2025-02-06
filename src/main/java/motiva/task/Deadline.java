@@ -3,7 +3,7 @@ package motiva.task;
 import java.time.LocalDateTime;
 
 public class Deadline extends Task {
-    
+
     protected LocalDateTime by;
 
     public Deadline(String description, String by) {
@@ -12,8 +12,8 @@ public class Deadline extends Task {
     }
 
     public String toFileString() {
-        return String.format("D | %s | %s", 
-                super.toFileString(), 
+        return String.format("D | %s | %s",
+                super.toFileString(),
                 this.by.format(Task.DATE_TIME_FORMAT));
     }
 
