@@ -35,7 +35,7 @@ public class Motiva {
             userInput = scanner.nextLine();
 
             if (userInput.isEmpty()) {
-                Ui.formatReply("No task captured.\nDo key in the task for me to keep track.");
+                Ui.formatReply(Parser.listCommands());
                 continue;
             }
 
