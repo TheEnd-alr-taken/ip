@@ -14,17 +14,37 @@ import motiva.task.Task;
 import motiva.task.TaskList;
 import motiva.task.Todo;
 
+/**
+ * Handles loading and saving tasks to a file.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The file path where task data is stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Returns the file path associated with this storage.
+     *
+     * @return The file path where task data is stored.
+     */
     public String getFilePath() {
         return this.filePath;
     }
 
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return A TaskList containing all tasks loaded from storage.
+     * @throws IOException If an I/O error occurs while reading the file.
+     * @throws MotivaException If the file contains invalid task data.
+     */
     public TaskList loadFromStorage() throws IOException, MotivaException {
         TaskList taskList = new TaskList();
         File file = new File(filePath);
@@ -71,6 +91,12 @@ public class Storage {
         return taskList;
     }
 
+    /**
+     * Writes the current list of tasks to the storage file.
+     *
+     * @param taskList The TaskList to be saved to the file.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     public void writeToStorage(TaskList taskList) throws IOException {
         FileWriter fw = new FileWriter(this.filePath);
         for (Task task : taskList.getTasks()) {

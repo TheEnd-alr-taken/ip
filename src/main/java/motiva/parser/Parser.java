@@ -11,8 +11,18 @@ import motiva.task.TaskList;
 import motiva.task.Todo;
 import motiva.ui.Ui;
 
+/**
+ * Parses user input and executes corresponding commands.
+ */
 public class Parser {
 
+    /**
+     * Parses and executes a user command.
+     *
+     * @param userInput The user input command.
+     * @param taskList The list of tasks to modify.
+     * @param storage The storage system to persist changes.
+     */
     public static void parseCommand(String userInput, TaskList taskList, Storage storage) {
         try {
             if (userInput.equals("list")) {
@@ -44,6 +54,11 @@ public class Parser {
 
     }
 
+    /**
+     * Returns a string listing all available commands.
+     *
+     * @return A formatted list of commands.
+     */
     public static String listCommands() {
         String commands = "\tlist\n"
                 + "\tbye\n"
