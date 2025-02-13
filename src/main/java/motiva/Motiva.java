@@ -1,6 +1,8 @@
 package motiva;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 import motiva.parser.Parser;
@@ -33,6 +35,30 @@ public class Motiva {
                     + " :\n" + e.getMessage());
             taskList = new TaskList();
         }
+    }
+
+    public Motiva() {
+        this(DATA_FILE_PATH);
+    }
+
+    public String getResponse(String input) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(outputStream));
+
+        try {
+            if (input.isEmpty()) {
+                Ui.formatReply(Parser.listCommands());
+            } else if (input.equals("bye")) {
+                Ui.sayGoodBye();
+            } else {
+                Parser.parseCommand(input, taskList, storage);
+            }
+        } finally {
+            System.setOut(originalOut);
+        }
+
+        return outputStream.toString().trim();
     }
 
     /**
