@@ -10,12 +10,12 @@ import java.time.format.DateTimeParseException;
  */
 public class Task {
 
-    protected String description;
-    protected boolean isDone;
-
     protected static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     protected static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
     protected static final DateTimeFormatter DISPLAY_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+
+    protected String description;
+    protected boolean isDone;
 
     /**
      * Constructs an incomplete Task with the specified description.
