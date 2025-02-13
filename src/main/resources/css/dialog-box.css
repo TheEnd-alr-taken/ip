@@ -1,0 +1,25 @@
+.label {
+    -fx-background-color: linear-gradient(to bottom right, #8A2BE2, #6A0DAD); /* Purple gradient */
+    -fx-text-fill: #E0E0E0; /* Light gray text */
+    -fx-border-color: #9370DB #00CED1 #DDA0DD #7FFFD4;
+    -fx-border-width: 2px;
+    -fx-background-radius: 1em 1em 0 1em;
+    -fx-border-radius: 1em 1em 0 1em;
+}
+
+.reply-label {
+    -fx-background-color: linear-gradient(to bottom right, #333333, #1E1E1E); /* Dark gray gradient */
+    -fx-text-fill: #E0E0E0; /* Light gray text */
+    -fx-background-radius: 1em 1em 1em 0;
+    -fx-border-radius: 1em 1em 1em 0;
+}
+
+#displayPicture {
+    /* Slightly larger display image */
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+
+    /* Rotate image clockwise by degrees. */
+    -fx-rotate: 0;
+}
+
