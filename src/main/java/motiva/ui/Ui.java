@@ -11,6 +11,8 @@ public class Ui {
      * @param text The message to be formatted and displayed.
      */
     public static void formatReply(String text) {
+        assert !text.isEmpty() : "Motiva's reply should never be empty";
+
         String indent = " ".repeat(4);
         String[] lines = text.split("\n");
 
