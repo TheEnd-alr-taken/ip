@@ -8,5 +8,5 @@
   <suppress checks="JavadocType" files=".*Test\.java"/>
   <suppress checks="MissingJavadocMethodCheck" files=".*Test\.java"/>
   <suppress checks="MissingSwitchDefault" files=".*Parser.java"/> <!--Allowed-->
-  <suppress checks="Indentation" files=".*Storage.java"/> <!--Allowed-->
+  <suppress checks="Indentation" files=".*Parser.java"/> <!--Allowed-->
 </suppressions>
