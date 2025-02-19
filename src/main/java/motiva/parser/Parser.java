@@ -1,6 +1,7 @@
 package motiva.parser;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import motiva.MotivaException;
 import motiva.storage.Storage;
@@ -52,6 +53,45 @@ public class Parser {
                     + ":\n" + e.getMessage());
         }
 
+    }
+
+    /**
+     * Parses a task from a single line of text.
+     *
+     * @param line The line of text representing a task.
+     * @return The corresponding Task object.
+     * @throws MotivaException If the task format is invalid.
+     */
+    public static Task parseTaskFromLine(String line) throws MotivaException {
+        String[] parts = line.split(" \\| ");
+
+        if (parts.length < 3 || !parts[0].matches("^[TDE]$") || !parts[1].matches("^[ X]$")) {
+            throw new MotivaException("Invalid task format: " + line);
+        }
+
+        String taskType = parts[0];
+        boolean isDone = parts[1].equals("X");
+        String[] taskParts = Arrays.copyOfRange(parts, 2, parts.length);
+
+        if (!Task.isValidTask(taskType, taskParts)) {
+            throw new MotivaException("Invalid task format: " + line);
+        }
+
+        Task task = createTask(taskType, taskParts);
+        if (isDone) {
+            task.toggleDone();
+        }
+
+        return task;
+    }
+
+    private static Task createTask(String taskType, String[] taskParts) throws MotivaException {
+        return switch (taskType) {
+            case "T" -> new Todo(taskParts[0].trim());
+            case "D" -> new Deadline(taskParts[0].trim(), taskParts[1].trim());
+            case "E" -> new Event(taskParts[0].trim(), taskParts[1].trim(), taskParts[2].trim());
+            default -> throw new MotivaException("Unexpected task type: " + taskType);
+        };
     }
 
     /**

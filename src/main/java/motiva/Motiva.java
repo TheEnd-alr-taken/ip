@@ -89,7 +89,7 @@ public class Motiva {
     }
 
     /**
-     * The main entry point of the Motiva application.
+     * Initializes and runs the Motiva application.
      *
      * @param args Command-line arguments (not used in the current implementation).
      */
