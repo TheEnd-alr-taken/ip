@@ -23,8 +23,9 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            stage.setMinHeight(250);
+            stage.setMinHeight(600);
             stage.setMinWidth(650);
+            stage.setMaxWidth(650);
             stage.setTitle("Motiva ChatBot");
             fxmlLoader.<MainWindow>getController().setMotiva(motiva);
             stage.show();

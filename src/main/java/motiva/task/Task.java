@@ -113,6 +113,8 @@ public class Task {
      * @return A LocalDateTime object representing the given date-time.
      */
     public LocalDateTime parseDateTime(String dateTime) {
+        assert isValidDate(dateTime) : "Datetime is not in yyyy-MM-dd or yyyy-MM-dd HHmm format.";
+
         if (dateTime.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
             return LocalDateTime.parse(dateTime, DATE_TIME_FORMAT);
         } else {

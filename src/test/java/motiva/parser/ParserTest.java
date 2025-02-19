@@ -1,26 +1,26 @@
 package motiva.parser;
 
-import motiva.storage.Storage;
-import motiva.task.TaskList;
-import motiva.task.Todo;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import motiva.storage.Storage;
+import motiva.task.TaskList;
+import motiva.task.Todo;
 
 public class ParserTest {
 
+    private static final String TEST_FILE_PATH = "./data/test.txt";
     private TaskList taskList;
     private Storage storage;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private static final String TEST_FILE_PATH = "./data/test.txt";
 
     @BeforeEach
     public void setUp() {

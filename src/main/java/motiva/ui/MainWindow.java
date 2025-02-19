@@ -54,6 +54,8 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        assert motiva != null : "Motiva instance should not be null";
+
         String input = userInput.getText().trim();
         String response = motiva.getResponse(input);
         dialogContainer.getChildren().addAll(
