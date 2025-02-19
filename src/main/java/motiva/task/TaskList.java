@@ -1,6 +1,7 @@
 package motiva.task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Represents a list of tasks in the Motiva application.
@@ -13,6 +14,23 @@ public class TaskList {
      */
     public TaskList() {
         tasks = new ArrayList<>();
+    }
+
+    /**
+     * Sorts tasks by deadlines chronologically (earliest first).
+     * - Deadline tasks are sorted by their `by` field.
+     * - Event tasks are sorted by their `from` field.
+     * - Todo tasks are placed at the end.
+     */
+    public void sort() {
+        tasks.sort(Comparator.comparing((Task task) -> {
+            if (task instanceof Deadline) {
+                return ((Deadline) task).by;
+            } else if (task instanceof Event) {
+                return ((Event) task).from;
+            }
+            return null;
+        }, Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     /**

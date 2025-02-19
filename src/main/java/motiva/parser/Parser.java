@@ -29,6 +29,10 @@ public class Parser {
             if (userInput.equals("list")) {
                 listTasks(taskList);
 
+            } else if (userInput.equals("sort")) {
+                sortTasks(taskList);
+                storage.writeToStorage(taskList);
+
             } else if (userInput.matches("^(mark|unmark) .*")) {
                 toggleTask(userInput, taskList);
                 storage.writeToStorage(taskList);
@@ -101,6 +105,7 @@ public class Parser {
      */
     public static String listCommands() {
         String commands = "\tlist\n"
+                + "\tsort\n"
                 + "\tbye\n"
                 + "\tmark <index>\n"
                 + "\tunmark <index>\n"
@@ -127,6 +132,11 @@ public class Parser {
 
             Ui.formatReply(text);
         }
+    }
+
+    private static void sortTasks(TaskList taskList) {
+        taskList.sort();
+        listTasks(taskList);
     }
 
     private static void findTasks(String userInput, TaskList taskList) {
