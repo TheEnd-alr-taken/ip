@@ -25,8 +25,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setMinHeight(600);
             stage.setMinWidth(650);
-            stage.setMaxWidth(650);
-            stage.setTitle("Motiva ChatBot");
+            stage.setTitle("Motiva");
             fxmlLoader.<MainWindow>getController().setMotiva(motiva);
             stage.show();
         } catch (IOException e) {

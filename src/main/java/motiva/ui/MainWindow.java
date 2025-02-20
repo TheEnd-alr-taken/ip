@@ -36,9 +36,6 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-        dialogContainer.getChildren().add(
-                DialogBox.getMotivaDialog("Hello! I'm Motiva.\nWhat can I do for you?", motivaImage)
-        );
     }
 
     /**
@@ -46,11 +43,15 @@ public class MainWindow extends AnchorPane {
      */
     public void setMotiva(Motiva m) {
         this.motiva = m;
+        if (motiva.hasLoadDataError()) {
+            displayMotivaErrorDialog("Error loading data from storage file.\nCreating a new task list instead.");
+        }
+        displayMotivaStartDialog("Hello! I'm Motiva.\nWhat can I do for you?");
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Motiva's reply and then appends them to
-     * the dialog container. Clears the user input after processing.
+     * Creates two dialog boxes, one echoing user input and the other containing Motiva's reply
+     * and then appends them to the dialog container. Clears the user input after processing.
      */
     @FXML
     private void handleUserInput() {
@@ -68,5 +69,15 @@ public class MainWindow extends AnchorPane {
             delay.setOnFinished(event -> Platform.exit());
             delay.play();
         }
+    }
+
+    private void displayMotivaStartDialog(String message) {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getMotivaDialog(message, motivaImage));
+    }
+
+    private void displayMotivaErrorDialog(String message) {
+        dialogContainer.getChildren().addAll(
+                DialogBox.getMotivaDialog(message, motivaImage));
     }
 }

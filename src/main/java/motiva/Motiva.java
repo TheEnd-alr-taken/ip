@@ -18,6 +18,7 @@ public class Motiva {
 
     private final Storage storage;
     private TaskList taskList;
+    private boolean hasLoadDataError = false;
 
     /**
      * Constructs a new instance of Motiva with the specified file path for data storage.
@@ -31,14 +32,20 @@ public class Motiva {
         try {
             taskList = storage.loadFromStorage();
         } catch (IOException | MotivaException e) {
-            Ui.formatReply("An I/O error occur while trying to read from " + DATA_FILE_PATH
-                    + " :\n" + e.getMessage());
+            this.hasLoadDataError = true;
             taskList = new TaskList();
         }
     }
 
     public Motiva() {
         this(DATA_FILE_PATH);
+    }
+
+    /*
+     * Returns true if there was an error loading data from the storage file, false otherwise.
+     */
+    public boolean hasLoadDataError() {
+        return hasLoadDataError;
     }
 
     public String getResponse(String input) {
